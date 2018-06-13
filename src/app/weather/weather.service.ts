@@ -3,20 +3,22 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { ICurrentWeatherData, ICurrentWeather } from '../interfaces'
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs/operators'
 
 @Injectable()
 export class WeatherService {
   constructor(private httpClient: HttpClient) {}
 
   getCurrentWeather(city: string, country: string): Observable<ICurrentWeather> {
-    return this.httpClient.get<ICurrentWeatherData>(
-      `${
-      environment.baseUrl
-      }api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${
-      environment.appId
-      }`
-    ).pipe(map(data => this.transformToICurrentWeather(data)))
+    return this.httpClient
+      .get<ICurrentWeatherData>(
+        `${
+          environment.baseUrl
+        }api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${
+          environment.appId
+        }`
+      )
+      .pipe(map(data => this.transformToICurrentWeather(data)))
   }
 
   private transformToICurrentWeather(data: ICurrentWeatherData): ICurrentWeather {
@@ -33,5 +35,4 @@ export class WeatherService {
   private convertKelvinToFarenheit(kelvin: number): number {
     return (kelvin * 9) / 5 - 459.67
   }
-
 }
